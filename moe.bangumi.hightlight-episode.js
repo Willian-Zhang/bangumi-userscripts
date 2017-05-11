@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Highlight Episode #
+// @name         Bangumi: Highlight ep#
 // @namespace    moe.bangumi.hightlight-episode
 // @version      0.2
 // @description  Highlight Episode Number
@@ -18,9 +18,7 @@ Test with:
 【動漫國字幕組】★04月新番[路人女主的養成方法♭][00-01][720P_Hi10P][簡繁外掛][MKV] 
 【千夏字幕組】【櫻花任務_Sakura Quest】[第03話][1280X720][MP4_PC&PSV兼容][繁體]​ 
 【极影字幕社】★4月新番 不正经的魔术讲师与禁忌教典 04 GB 720P MP4 
-jiaolovekt @[极影字幕社] 发布于 昨天上午11点07
 【極影字幕社】★4月新番 不正經的魔術講師與禁忌教典 04 BIG5 720P MP4 
-jiaolovekt @[极影字幕社] 发布于 昨天上午11点03
 【千夏字幕組】【重啟咲良田_Sagrada Reset】[第03話][1280x720][MP4_PC&PSV兼容][繁體] 
 【幻櫻字幕組】【4月新番】【喧嘩番長 乙女-girl beats boys- Kenka Banchou Otome Girl Beats Boys】【03】【BIG5_MP4】【1280X720】 
 【幻樱字幕组】【4月新番】【喧哗番长 乙女-girl beats boys- Kenka Banchou Otome Girl Beats Boys】【03】【GB_MP4】【1280X720】 
