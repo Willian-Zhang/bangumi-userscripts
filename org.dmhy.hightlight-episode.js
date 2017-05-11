@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DMHY: Highlight ep#
 // @namespace    org.dmhy.hightlight-episode
-// @version      0.9
+// @version      0.10
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://share.dmhy.org/topics/list*
