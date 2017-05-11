@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bangumi: Highlight ep#
 // @namespace    moe.bangumi.hightlight-episode
-// @version      0.4
+// @version      0.5
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://bangumi.moe/*
@@ -36,7 +36,8 @@ const highlightMe = function(){
         if($element.html().match(/<highlight/g)){
             return;
         }
-        let found = epRegex.exec($element.text());
+        let text = $element.text().trim()
+        let found = epRegex.exec(text);
         if(found !== null){
             let ep = Number(found[3]) >-1 ? Number(found[4]) : 0;
             let color = colors[ep % colors.length];
@@ -46,7 +47,7 @@ const highlightMe = function(){
                 document.createTextNode(found[5])
             ]);
         }else{
-            console.log($element.text())
+            console.log(text)
         }
 }
 $(document).on("mouseenter",'[torrent-list]',function(e){

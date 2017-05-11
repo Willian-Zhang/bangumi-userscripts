@@ -13,14 +13,6 @@
 const $doc = unsafeWindow.$;
 const angular = unsafeWindow.angular;
 
-// let rin = angular.module('rin')
-// rin['_invokeQueue'].forEach(function(value){ 
-//     console.log(value[1] + ": " + value[2][0]);
-// })
-// rin.directive('torrentList',(e)=>{
-
-// })
-
 const colors = [
     "#FF0097",
     "#A200FF",
@@ -38,7 +30,8 @@ const highlightMe = function(){
         //     return;
         // }
         // console.log($element.text())
-        let found = epRegex.exec($element.text());
+        let text = $element.text().trim()
+        let found = epRegex.exec(text);
         if(found !== null){
             let ep = Number(found[3]) >-1 ? Number(found[4]) : 0;
             let color = colors[ep % colors.length];
@@ -48,7 +41,7 @@ const highlightMe = function(){
                 document.createTextNode(found[5])
             ]);
         }else{
-            console.log($element.text())
+            console.log(text)
         }
 }
 $doc(document).ready(function(){
