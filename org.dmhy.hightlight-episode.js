@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DMHY: Highlight ep#
 // @namespace    org.dmhy.hightlight-episode
-// @version      0.8
+// @version      0.9
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://share.dmhy.org/topics/list*
@@ -29,7 +29,7 @@ const highlightMe = function(){
     // if($element.html().match(/<highlight/g)){
     //     return;
     // }
-    var text = $element.text().trim()
+    var text = $element.text().trim();
     var found = epRegex.exec(text);
     if(found !== null){
         let ep = Number(found[3]) >-1 ? Number(found[4]) : 0;
@@ -40,10 +40,10 @@ const highlightMe = function(){
             document.createTextNode(found[5])
         ]);
     }else{
-        console.log(text)
-        console.log(found)
+        console.log(text);
+        console.log(found);
     }
-}
+};
 $doc(document).ready(function(){
     let table = $(".main > .table  table > tbody");
     let titles = table.find('tr > td.title > a').each(highlightMe);
