@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DMHY: Highlight ep#
 // @namespace    org.dmhy.hightlight-episode
-// @version      0.10
+// @version      0.11
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://share.dmhy.org/topics/list*
@@ -26,9 +26,9 @@ const epRegex = /((.+)([\s|\[|【|第]))(\d{1,3}(?:[-|~]\d{1,3})?)(([集|話|话
 
 const highlightMe = function(){
     let $element = $(this);
-    // if($element.html().match(/<highlight/g)){
-    //     return;
-    // }
+    if($element.html().match(/<highlight/g)){
+        return;
+    }
     var text = $element.text().trim();
     var found = epRegex.exec(text);
     if(found !== null){
@@ -46,5 +46,7 @@ const highlightMe = function(){
 };
 $doc(document).ready(function(){
     let table = $(".main > .table  table > tbody");
-    let titles = table.find('tr > td.title > a').each(highlightMe);
+    let titles = table.find('tr > td.title > a')
+    titles.each(highlightMe);
+    titles.each(highlightMe);
 });
