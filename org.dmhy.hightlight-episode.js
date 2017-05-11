@@ -32,7 +32,7 @@ const highlightMe = function(){
     var text = $element.text().trim();
     var found = epRegex.exec(text);
     if(found !== null){
-        let ep = Number(found[3]) >-1 ? Number(found[4]) : 0;
+        let ep = Number(found[4]) >-1 ? Number(found[4]) : 0;
         let color = colors[ep % colors.length];
         $element.empty().append([
             document.createTextNode(found[1]),
