@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bangumi: Highlight ep#
 // @namespace    moe.bangumi.hightlight-episode
-// @version      0.2
+// @version      0.3
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://bangumi.moe/*
