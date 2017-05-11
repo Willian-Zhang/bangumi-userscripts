@@ -33,22 +33,23 @@ const epRegex = /((.+)([\s|\[|【|第]))(\d{1,3}(?:[-|~]\d{1,3})?)(([集|話|话
 
 const highlightMe = function(){
     let $element = $(this);
-        if($element.html().match(/<highlight/g)){
-            return;
-        }
-        let text = $element.text().trim()
-        let found = epRegex.exec(text);
-        if(found !== null){
-            let ep = Number(found[3]) >-1 ? Number(found[4]) : 0;
-            let color = colors[ep % colors.length];
-            $element.empty().append([
-                document.createTextNode(found[1]),
-                `<highlight style="background-color: ${color}">${found[4]}</highlight>`,
-                document.createTextNode(found[5])
-            ]);
-        }else{
-            console.log(text)
-        }
+    if($element.html().match(/<highlight/g)){
+        return;
+    }
+    var text = $element.text().trim()
+    var found = epRegex.exec(text);
+    if(found !== null){
+        let ep = Number(found[3]) >-1 ? Number(found[4]) : 0;
+        let color = colors[ep % colors.length];
+        $element.empty().append([
+            document.createTextNode(found[1]),
+            `<highlight style="background-color: ${color}">${found[4]}</highlight>`,
+            document.createTextNode(found[5])
+        ]);
+    }else{
+        console.log(text)
+        console.log(found)
+    }
 }
 $(document).on("mouseenter",'[torrent-list]',function(e){
     let titleElements = $(this).find(".md-item-raised-title");
