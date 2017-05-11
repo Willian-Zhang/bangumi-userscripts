@@ -84,7 +84,7 @@ const highlightMe = function(){
         // if($element.html().match(/<highlight/g)){
         //     return;
         // }
-        console.log($element.text())
+        // console.log($element.text())
         let found = epRegex.exec($element.text());
         if(found){
             let ep = Number(found[3]) >-1 ? Number(found[4]) : 0;
@@ -94,6 +94,8 @@ const highlightMe = function(){
                 `<highlight style="background-color: ${color}">${found[4]}</highlight>`,
                 document.createTextNode(found[5])
             ]);
+        }else{
+            console.log($element.text())
         }
 }
 $doc(document).ready(function(){
