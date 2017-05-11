@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bangumi: Highlight ep#
 // @namespace    moe.bangumi.hightlight-episode
-// @version      0.10
+// @version      0.12
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://bangumi.moe/*
@@ -55,9 +55,9 @@ $(document).on("mouseenter",'[torrent-list]',function(e){
     let titleElements = $(this).find(".md-item-raised-title");
 
     titleElements.find("span").each(highlightMe);
+    titleElements.find("span").each(highlightMe);
     titleElements.off("mouseenter");
     titleElements.on("mouseenter",highlightMe);
-    titleElements.find("span").each(highlightMe);
 });
 // $(document).on("mouseover",'.compact-torrent-list',function(e){
 //     console.log(this)

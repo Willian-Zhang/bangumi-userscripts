@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DMHY: Highlight ep#
 // @namespace    org.dmhy.hightlight-episode
-// @version      0.11
+// @version      0.12
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://share.dmhy.org/topics/list*
@@ -46,7 +46,10 @@ const highlightMe = function(){
 };
 $doc(document).ready(function(){
     let table = $(".main > .table  table > tbody");
-    let titles = table.find('tr > td.title > a')
-    titles.each(highlightMe);
-    titles.each(highlightMe);
+    let titles = table.find('tr');
+    let titlesA = titles.find('td.title > a');
+    titlesA.each(highlightMe);
+    titlesA.each(highlightMe);
+    titles.off("mouseenter");
+    titles.on("mouseenter",highlightMe);
 });
