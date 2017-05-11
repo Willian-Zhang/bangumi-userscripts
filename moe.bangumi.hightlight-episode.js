@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Bangumi: Highlight ep#
 // @namespace    moe.bangumi.hightlight-episode
-// @version      0.3
+// @version      0.4
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://bangumi.moe/*
@@ -9,20 +9,6 @@
 // @run-at       document-end
 // ==/UserScript==
 
-/*
-Regex:
-(.+)([\s|\[|【]第?)(\d{1,2}(?:[-|~]\d{1,2})?)(話?[\s|\]|】])(.+)
-
-Test with:
-【DHR動研字幕組&茉語星夢】[櫻花任務_Sakura Quest][03][繁體][720P][MP4] 
-【動漫國字幕組】★04月新番[路人女主的養成方法♭][00-01][720P_Hi10P][簡繁外掛][MKV] 
-【千夏字幕組】【櫻花任務_Sakura Quest】[第03話][1280X720][MP4_PC&PSV兼容][繁體]​ 
-【极影字幕社】★4月新番 不正经的魔术讲师与禁忌教典 04 GB 720P MP4 
-【極影字幕社】★4月新番 不正經的魔術講師與禁忌教典 04 BIG5 720P MP4 
-【千夏字幕組】【重啟咲良田_Sagrada Reset】[第03話][1280x720][MP4_PC&PSV兼容][繁體] 
-【幻櫻字幕組】【4月新番】【喧嘩番長 乙女-girl beats boys- Kenka Banchou Otome Girl Beats Boys】【03】【BIG5_MP4】【1280X720】 
-【幻樱字幕组】【4月新番】【喧哗番长 乙女-girl beats boys- Kenka Banchou Otome Girl Beats Boys】【03】【GB_MP4】【1280X720】 
-*/
 const $ = unsafeWindow.$;
 const angular = unsafeWindow.angular;
 
@@ -43,7 +29,7 @@ const colors = [
     "#F09609",
     "#1BA1E2"
 ];
-const epRegex = /(.+)([\s|\[|【]第?)(\d{1,2}(?:[-|~]\d{1,2})?)([話|话]?[\s|\]|】])(.+)/g;
+const epRegex = /((.+)([\s|\[|【]第?))(\d{1,2}(?:[-|~]\d{1,2})?)((話?[\s|\]|】])(.+))/g;
 
 const highlightMe = function(){
     let $element = $(this);
@@ -51,17 +37,16 @@ const highlightMe = function(){
             return;
         }
         let found = epRegex.exec($element.text());
-        if(found){
-            let ep = Number(found[3]) >-1 ? Number(found[3]) : 0;
+        if(found !== null){
+            let ep = Number(found[3]) >-1 ? Number(found[4]) : 0;
             let color = colors[ep % colors.length];
-            console.log(found[1]);
             $element.empty().append([
                 document.createTextNode(found[1]),
-                found[2],
-                `<highlight style="background-color: ${color}">${found[3]}</highlight>`,
-                found[4],
+                `<highlight style="background-color: ${color}">${found[4]}</highlight>`,
                 document.createTextNode(found[5])
             ]);
+        }else{
+            console.log($element.text())
         }
 }
 $(document).on("mouseenter",'[torrent-list]',function(e){
