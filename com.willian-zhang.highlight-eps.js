@@ -1,10 +1,11 @@
 // ==UserScript==
-// @name         DMHY: Highlight ep#
-// @namespace    org.dmhy.hightlight-episode
-// @version      0.14
+// @name         Highlight ep#
+// @namespace    com.willian-zhang.highlight-eps
+// @version      0.99
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://share.dmhy.org/topics/list*
+// @match        https://bangumi.moe/*
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
 // @grant        unsafeWindow
 // @run-at       document-end
@@ -43,11 +44,22 @@ const highlightMe = function(){
         console.log(text);
     }
 };
-$doc(document).ready(function(){
-    let table = $(".main > .table  table > tbody");
-    let titles = table.find('tr > td.title > a');
-    titles.each(highlightMe);
-    titles.each(highlightMe);
-    titles.off("mouseenter");
-    titles.on("mouseenter",highlightMe);
-});
+if(/bangumi.moe/.test(document.location.host)){
+    $doc(document).on("mouseenter",'[torrent-list]',function(e){
+        let titleElements = $(this).find(".md-item-raised-title");
+
+        titleElements.find("span").each(highlightMe);
+        titleElements.find("span").each(highlightMe);
+        titleElements.off("mouseenter");
+        titleElements.on("mouseenter",highlightMe);
+    });
+}else if(/share.dmhy.org/.test(document.location.host)){
+    $doc(document).ready(function(){
+        let table = $(".main > .table  table > tbody");
+        let titles = table.find('tr > td.title > a');
+        titles.each(highlightMe);
+        titles.each(highlightMe);
+        titles.off("mouseenter");
+        titles.on("mouseenter",highlightMe);
+    });
+}
