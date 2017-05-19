@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      0.99
+// @version      1.00
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://share.dmhy.org/topics/list*
@@ -23,7 +23,7 @@ const colors = [
     "#F09609",
     "#1BA1E2"
 ];
-const epRegex = /((.+)([\s|\[|【|第]))(\d{1,3}(?:[-|~]\d{1,3})?)(([集|話|话|\s|\]|】])(.*))/;
+const epRegex = /((.+)([\s|\[|【|第]))(\d{1,3}(?:\.\d)?(?:[-|~]\d{1,3})?)(([集|話|话|\s|\]|】])(.*))/;
 
 const highlightMe = function(){
     let $element = $(this);
