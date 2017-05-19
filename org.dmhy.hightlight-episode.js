@@ -29,7 +29,6 @@ const highlightMe = function(){
     if($element.html().match(/<highlight/)){
         return;
     }
-    debugger
     var text = $element.text().trim();
     var found = epRegex.exec(text);
     if(found !== null){
