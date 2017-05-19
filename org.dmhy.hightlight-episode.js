@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DMHY: Highlight ep#
 // @namespace    org.dmhy.hightlight-episode
-// @version      0.13
+// @version      0.14
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://share.dmhy.org/topics/list*
@@ -22,13 +22,14 @@ const colors = [
     "#F09609",
     "#1BA1E2"
 ];
-const epRegex = /((.+)([\s|\[|【|第]))(\d{1,3}(?:[-|~]\d{1,3})?)(([集|話|话|\s|\]|】])(.*))/g;
+const epRegex = /((.+)([\s|\[|【|第]))(\d{1,3}(?:[-|~]\d{1,3})?)(([集|話|话|\s|\]|】])(.*))/;
 
 const highlightMe = function(){
     let $element = $(this);
-    if($element.html().match(/<highlight/g)){
+    if($element.html().match(/<highlight/)){
         return;
     }
+    debugger
     var text = $element.text().trim();
     var found = epRegex.exec(text);
     if(found !== null){
@@ -41,7 +42,6 @@ const highlightMe = function(){
         ]);
     }else{
         console.log(text);
-        console.log(found);
     }
 };
 $doc(document).ready(function(){
