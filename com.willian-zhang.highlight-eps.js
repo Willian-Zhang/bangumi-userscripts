@@ -49,7 +49,6 @@ if(/bangumi.moe/.test(document.location.host)){
         let titleElements = $(this).find(".md-item-raised-title");
 
         titleElements.find("span").each(highlightMe);
-        titleElements.find("span").each(highlightMe);
         titleElements.off("mouseenter");
         titleElements.on("mouseenter",highlightMe);
     });
@@ -57,7 +56,6 @@ if(/bangumi.moe/.test(document.location.host)){
     $doc(document).ready(function(){
         let table = $(".main > .table  table > tbody");
         let titles = table.find('tr > td.title > a');
-        titles.each(highlightMe);
         titles.each(highlightMe);
         titles.off("mouseenter");
         titles.on("mouseenter",highlightMe);
