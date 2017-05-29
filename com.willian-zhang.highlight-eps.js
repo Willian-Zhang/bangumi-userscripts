@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      1.01
+// @version      1.02
 // @description  Highlight Episode Number
 // @author       Willian
-// @match        https://share.dmhy.org/topics/list*
+// @match        https://share.dmhy.org/*
 // @match        https://bangumi.moe/*
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
 // @grant        unsafeWindow
