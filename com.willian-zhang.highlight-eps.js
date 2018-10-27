@@ -1,17 +1,17 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      1.02
+// @version      1.04
 // @description  Highlight Episode Number
 // @author       Willian
-// @match        https://share.dmhy.org/*
-// @match        https://bangumi.moe/*
+// @match        http*://share.dmhy.org/*
+// @match        http*://bangumi.moe/*
+// @match        http*://share.xfsub.com*/sort-*
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
 // @grant        unsafeWindow
 // @run-at       document-end
 // ==/UserScript==
 
-const $doc = unsafeWindow.$;
 const angular = unsafeWindow.angular;
 
 const colors = [
@@ -45,7 +45,7 @@ const highlightMe = function(){
     }
 };
 if(/bangumi.moe/.test(document.location.host)){
-    $doc(document).on("mouseenter",'[torrent-list]',function(e){
+    $(document).on("mouseenter",'[torrent-list]',function(e){
         let titleElements = $(this).find(".md-item-raised-title");
 
         titleElements.find("span").each(highlightMe);
@@ -53,11 +53,20 @@ if(/bangumi.moe/.test(document.location.host)){
         titleElements.on("mouseenter",highlightMe);
     });
 }else if(/share.dmhy.org/.test(document.location.host)){
-    $doc(document).ready(function(){
+    $(document).ready(function(){
         let table = $(".main > .table  table > tbody");
         let titles = table.find('tr > td.title > a');
         titles.each(highlightMe);
         titles.off("mouseenter");
         titles.on("mouseenter",highlightMe);
     });
+}else if(/share.xfsub.com/.test(document.location.host)){
+    $(document).ready(function(){
+        let table = $("#listTable > tbody");
+        let titles = table.find('tr > td:nth-child(2) > a:last-child');
+        titles.each(highlightMe);
+        titles.off("mouseenter");
+        titles.on("mouseenter",highlightMe);
+    });
 }
+
