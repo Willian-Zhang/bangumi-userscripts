@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      2.0
+// @version      2.1
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        http*://share.dmhy.org/*
 // @match        http*://bangumi.moe/*
 // @match        http*://share.xfsub.com*/sort-*
+// @match        http*://share.xfapi.top*/sort-*
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
 // @require      https://raw.githubusercontent.com/Willian-Zhang/bangumi-userscripts/master/com.willian-zhang.color.js
 // @grant        unsafeWindow
@@ -69,7 +70,10 @@ if(/bangumi.moe/.test(document.location.host)){
         titles.off("mouseenter");
         titles.on("mouseenter",highlightMe);
     });
-}else if(/share.xfsub.com/.test(document.location.host)){
+}else if(
+    /share.xfsub.com/.test(document.location.host) ||
+    /share.xfapi.top/.test(document.location.host)
+    ){
     $(document).ready(function(){
         let table = $("#listTable > tbody");
         let titles = table.find('tr > td:nth-child(2) > a:last-child');
