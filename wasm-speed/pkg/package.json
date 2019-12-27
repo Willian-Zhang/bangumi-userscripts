@@ -9,7 +9,6 @@
     "wasm_speed.js",
     "wasm_speed.d.ts"
   ],
-  "module": "wasm_speed.js",
-  "types": "wasm_speed.d.ts",
-  "sideEffects": "false"
+  "browser": "wasm_speed.js",
+  "types": "wasm_speed.d.ts"
 }

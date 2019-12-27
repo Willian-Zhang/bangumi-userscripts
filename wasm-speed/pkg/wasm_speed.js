@@ -1,63 +1,63 @@
+(function() {
+    const __exports = {};
+    let wasm;
 
-let wasm;
+    /**
+    * @param {number} a
+    * @param {number} b
+    * @returns {number}
+    */
+    __exports.add = function(a, b) {
+        var ret = wasm.add(a, b);
+        return ret;
+    };
 
-/**
-* @param {number} a
-* @param {number} b
-* @returns {number}
-*/
-export function add(a, b) {
-    var ret = wasm.add(a, b);
-    return ret;
-}
+    function init(module) {
 
-function init(module) {
-    if (typeof module === 'undefined') {
-        module = import.meta.url.replace(/\.js$/, '_bg.wasm');
-    }
-    let result;
-    const imports = {};
+        let result;
+        const imports = {};
 
-    if ((typeof URL === 'function' && module instanceof URL) || typeof module === 'string' || (typeof Request === 'function' && module instanceof Request)) {
+        if ((typeof URL === 'function' && module instanceof URL) || typeof module === 'string' || (typeof Request === 'function' && module instanceof Request)) {
 
-        const response = fetch(module);
-        if (typeof WebAssembly.instantiateStreaming === 'function') {
-            result = WebAssembly.instantiateStreaming(response, imports)
-            .catch(e => {
-                return response
-                .then(r => {
-                    if (r.headers.get('Content-Type') != 'application/wasm') {
-                        console.warn("`WebAssembly.instantiateStreaming` failed because your server does not serve wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n", e);
-                        return r.arrayBuffer();
-                    } else {
-                        throw e;
-                    }
-                })
-                .then(bytes => WebAssembly.instantiate(bytes, imports));
-            });
-        } else {
-            result = response
-            .then(r => r.arrayBuffer())
-            .then(bytes => WebAssembly.instantiate(bytes, imports));
-        }
-    } else {
-
-        result = WebAssembly.instantiate(module, imports)
-        .then(result => {
-            if (result instanceof WebAssembly.Instance) {
-                return { instance: result, module };
+            const response = fetch(module);
+            if (typeof WebAssembly.instantiateStreaming === 'function') {
+                result = WebAssembly.instantiateStreaming(response, imports)
+                .catch(e => {
+                    return response
+                    .then(r => {
+                        if (r.headers.get('Content-Type') != 'application/wasm') {
+                            console.warn("`WebAssembly.instantiateStreaming` failed because your server does not serve wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n", e);
+                            return r.arrayBuffer();
+                        } else {
+                            throw e;
+                        }
+                    })
+                    .then(bytes => WebAssembly.instantiate(bytes, imports));
+                });
             } else {
-                return result;
+                result = response
+                .then(r => r.arrayBuffer())
+                .then(bytes => WebAssembly.instantiate(bytes, imports));
             }
+        } else {
+
+            result = WebAssembly.instantiate(module, imports)
+            .then(result => {
+                if (result instanceof WebAssembly.Instance) {
+                    return { instance: result, module };
+                } else {
+                    return result;
+                }
+            });
+        }
+        return result.then(({instance, module}) => {
+            wasm = instance.exports;
+            init.__wbindgen_wasm_module = module;
+
+            return wasm;
         });
     }
-    return result.then(({instance, module}) => {
-        wasm = instance.exports;
-        init.__wbindgen_wasm_module = module;
 
-        return wasm;
-    });
-}
+    self.wasm_bindgen = Object.assign(init, __exports);
 
-export default init;
-
+})();
