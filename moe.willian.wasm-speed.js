@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         WASM Speed JS
 // @namespace    moe.willian.wasm-speed
-// @version      0.1
+// @version      1.0
 // @description  Auto name the magnet link in anime site
 // @author       Willian
 // @match        https://share.dmhy.org/topics/list*
 // @require      https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js
 // @require      https://github.com/emn178/hi-base32/raw/master/build/base32.min.js
 // @require      https://cdn.jsdelivr.net/combine/npm/lodash@4,npm/platform@1,npm/benchmark@2
-// @require      https://github.com/Willian-Zhang/wasm-base32/raw/master/pre-release/wasm_base32.js
-// @resource     base32WASM https://github.com/Willian-Zhang/wasm-base32/raw/master/pre-release/wasm_base32_bg.wasm
+// @require      http://localhost:5000/pkg/wasm_base32.js
+// @resource     base32WASM http://localhost:5000/pkg/wasm_base32_bg.wasm
 // @grant        GM_getResourceURL
 // @grant        unsafeWindow
 // @run-at       document-end
@@ -37,7 +37,8 @@ base32.decode.asHex = (encoded) =>{
 }
 
 const runWasm = async () => {
-    const base32WASM = await wasm_bindgen(GM_getResourceURL('base32WASM'));
+    await wasm_bindgen(GM_getResourceURL('base32WASM'));
+    const base32WASM = wasm_bindgen;
 
     let suite = new Benchmark.Suite;
     suite.add('JS.asHex#test', function() {
