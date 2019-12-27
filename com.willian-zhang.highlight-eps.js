@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      2.1
+// @version      2.2
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        http*://share.dmhy.org/*
@@ -51,7 +51,7 @@ const highlightMe = function(){
             document.createTextNode(suffix)
         ]);
     }else{
-        console.log(text);
+        console.log('NO-EP',text);
     }
 };
 if(/bangumi.moe/.test(document.location.host)){
