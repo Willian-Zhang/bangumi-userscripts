@@ -8,6 +8,10 @@
 // @require      https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js
 // @require      https://github.com/emn178/hi-base32/raw/master/build/base32.min.js
 // @require      https://cdn.jsdelivr.net/combine/npm/lodash@4,npm/platform@1,npm/benchmark@2
+// @require      https://github.com/Willian-Zhang/wasm-base32/raw/master/pre-release/wasm_base32.js
+// @resource     base32WASM https://github.com/Willian-Zhang/wasm-base32/raw/master/pre-release/wasm_base32_bg.wasm
+// @grant        GM_getResourceURL
+// @grant        unsafeWindow
 // @run-at       document-end
 // ==/UserScript==
 unsafeWindow.Benchmark = Benchmark;
@@ -32,19 +36,31 @@ base32.decode.asHex = (encoded) =>{
     return base32.decode.asBytes(encoded).map(e=>e.toString(16).padStart(2, '0')).join('');
 }
 
-let suite = new Benchmark.Suite;
-suite.add('JS.asHex#test', function() {
-    for (const btih of btihs) {
-        base32.decode.asHex(btih)
-    }
-})
-.on('complete', function() {
-    console.warn('Fastest is ' + this.filter('fastest').map('name'));
-})
-.on("cycle", function(event) {
-    console.log(String(event.target));
-})
-.on('error', function(err) {
-    console.error(err);
-})
-.run({ 'async': true });
+const runWasm = async () => {
+    const base32WASM = await wasm_bindgen(GM_getResourceURL('base32WASM'));
+
+    let suite = new Benchmark.Suite;
+    suite.add('JS.asHex#test', function() {
+        for (const btih of btihs) {
+            base32.decode.asHex(btih)
+        }
+    })
+    suite.add('WASM.asHex#test', function() {
+        for (const btih of btihs) {
+            base32WASM.decode_to_string(btih)
+        }
+    })
+    .on('complete', function() {
+        console.warn('Fastest is ' + this.filter('fastest').map('name'));
+    })
+    .on("cycle", function(event) {
+        console.log(String(event.target));
+    })
+    .on('error', function(err) {
+        console.error(err);
+    })
+    .run({ 'async': true });
+};
+runWasm();
+
+
