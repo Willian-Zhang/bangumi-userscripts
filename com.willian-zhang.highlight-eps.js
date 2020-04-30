@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      2.2
+// @version      2.3
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        http*://share.dmhy.org/*
@@ -64,7 +64,7 @@ if(/bangumi.moe/.test(document.location.host)){
     });
 }else if(/share.dmhy.org/.test(document.location.host)){
     $(document).ready(function(){
-        let table = $(".main > .table  table > tbody");
+        let table = $(".table  table > tbody");
         let titles = table.find('tr > td.title > a');
         titles.each(highlightMe);
         titles.off("mouseenter");
