@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      2.3.1
+// @version      2.4
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        http*://dmhy.org/*
@@ -27,7 +27,8 @@ const Hs = [
 const colors = Hs.map(H=> HSL2RGB(H, S, L));
 console.log(`Colors: ${colors.length}`);
 
-const epRegex = /((.+)(([\s|\[|【|第])(?:\d{1,3}[-|~])?(\d{1,3})(?:\.\d)?(?:v\d)?([集|話|话|\s|\]|】]))(.*))/;
+// https://regex101.com/r/4ovR28/
+const epRegex = /((.+)((\s|\[|【|第|EP)(?:\d{1,3}[-|~])?(\d{1,3})(?:\.\d)?(?:v\d)?(?:TV)?(集|話|话|\s|\]|】))(.*))/;
 // TODO: named
 // ((?<prefix>.+)(?<epText>([\s|\[|【|第])(?:\d{1,3}[-|~])?(?<ep>\d{1,3})(?:\.\d)?(?:v\d)?([集|話|话|\s|\]|】]))(?<suffix>.*))
 
