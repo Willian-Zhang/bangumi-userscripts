@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      2.3
+// @version      2.3.1
 // @description  Highlight Episode Number
 // @author       Willian
+// @match        http*://dmhy.org/*
 // @match        http*://share.dmhy.org/*
 // @match        http*://bangumi.moe/*
 // @match        http*://share.xfsub.com*/sort-*
@@ -14,7 +15,7 @@
 // @run-at       document-end
 // ==/UserScript==
 
-const angular = unsafeWindow.angular;
+// const angular = unsafeWindow.angular;
 
 const [S, L] = [50, 75];
 const Hs = [
@@ -62,7 +63,7 @@ if(/bangumi.moe/.test(document.location.host)){
         titleElements.off("mouseenter");
         titleElements.on("mouseenter",highlightMe);
     });
-}else if(/share.dmhy.org/.test(document.location.host)){
+}else if(/dmhy.org/.test(document.location.host)){
     $(document).ready(function(){
         let table = $(".table  table > tbody");
         let titles = table.find('tr > td.title > a');
