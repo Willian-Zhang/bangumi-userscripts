@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         WASM Speed JS
 // @namespace    moe.willian.wasm-speed
-// @version      1.0
+// @version      1.0.1
 // @description  Auto name the magnet link in anime site
 // @author       Willian
-// @match        https://share.dmhy.org/topics/list*
+// @match        http*://dmhy.org/
+// @match        http*://dmhy.org/*
+// @match        http*://share.dmhy.org/*
 // @require      https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js
 // @require      https://github.com/emn178/hi-base32/raw/master/build/base32.min.js
 // @require      https://cdn.jsdelivr.net/combine/npm/lodash@4,npm/platform@1,npm/benchmark@2
