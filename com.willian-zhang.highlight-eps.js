@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      2.4.2
+// @version      2.5
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        http*://dmhy.org/
@@ -32,7 +32,7 @@ const epRegex = /((.+)((\s|\[|【|第|EP)(?:\d{1,4}[-|~])?(\d{1,4})(?:\.\d)?(?:v
 // TODO: named
 // ((?<prefix>.+)(?<epText>([\s|\[|【|第])(?:\d{1,3}[-|~])?(?<ep>\d{1,3})(?:\.\d)?(?:v\d)?([集|話|话|\s|\]|】]))(?<suffix>.*))
 
-const highlightMe = function(){
+function highlightMe(){
     let $element = $(this);
     if($element.html().match(/<highlight/)){
         return;
@@ -67,13 +67,11 @@ if(/bangumi.moe/.test(document.location.host)){
     });
 }else if(/dmhy.org/.test(document.location.host)){
     console.log('Highlighting DMHY');
-    $(document).ready(function(){
-        let table = $(".table  table > tbody");
-        let titles = table.find('tr > td.title > a');
-        titles.each(highlightMe);
-        titles.off("mouseenter");
-        titles.on("mouseenter",highlightMe);
-    });
+    let table = $(".table  table > tbody");
+    let titles = table.find('tr > td.title > a');
+    titles.each(highlightMe);
+    titles.off("mouseenter");
+    titles.on("mouseenter",highlightMe);
 }else if(
     /share.xfsub.com/.test(document.location.host) ||
     /share.xfapi.top/.test(document.location.host)
