@@ -1,15 +1,17 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      2.5
+// @version      2.6
 // @description  Highlight Episode Number
 // @author       Willian
-// @match        http*://dmhy.org/
-// @match        http*://dmhy.org/*
-// @match        http*://share.dmhy.org/*
-// @match        http*://bangumi.moe/*
-// @match        http*://share.xfsub.com*/sort-*
-// @match        http*://share.xfapi.top*/sort-*
+// @match        https://dmhy.org/
+// @match        https://dmhy.org/*
+// @match        https://share.dmhy.org/*
+// @match        https://bangumi.moe/*
+// @match        https://share.xfsub.com*/sort-*
+// @match        https://share.xfapi.top*/sort-*
+// @match        https://mikanani.me/Home/Classic*
+// @match        https://mikanani.me/Home/Search*
 // @require      https://code.jquery.com/jquery-2.1.4.min.js
 // @require      https://raw.githubusercontent.com/Willian-Zhang/bangumi-userscripts/master/com.willian-zhang.color.js
 // @grant        unsafeWindow
@@ -84,7 +86,15 @@ if(/bangumi.moe/.test(document.location.host)){
         titles.off("mouseenter");
         titles.on("mouseenter",highlightMe);
     });
+} else if(/mikanani.me/.test(document.location.host)){
+    console.log('Highlighting Mikan');
+    $(document).ready(function(){
+        // Only table rows: the mobile list duplicates these links with nested markup
+        let titles = $('table a[href^="/Home/Episode/"]');
+        titles.each(highlightMe);
+        titles.off("mouseenter");
+        titles.on("mouseenter",highlightMe);
+    });
 } else{
     console.log('NO MATCH for Highlighting')
 }
-
