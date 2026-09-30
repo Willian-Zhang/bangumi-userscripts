@@ -1,23 +1,18 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      2.6
+// @version      3.0
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://dmhy.org/
 // @match        https://dmhy.org/*
 // @match        https://share.dmhy.org/*
 // @match        https://bangumi.moe/*
-// @match        https://share.xfsub.com*/sort-*
-// @match        https://share.xfapi.top*/sort-*
+// @include      /^https:\/\/share\.(xfsub\.com|xfapi\.top)(:\d+)?\/sort-/
 // @match        https://mikanani.me/Home/Classic*
 // @match        https://mikanani.me/Home/Search*
-// @require      https://code.jquery.com/jquery-2.1.4.min.js
-// @require      https://raw.githubusercontent.com/Willian-Zhang/bangumi-userscripts/master/com.willian-zhang.color.js
-// @grant        unsafeWindow
+// @grant        none
 // ==/UserScript==
-
-// const angular = unsafeWindow.angular;
 
 const [S, L] = [50, 75];
 const Hs = [
@@ -26,75 +21,80 @@ const Hs = [
     90, 90+120, 90+240,
     30, 30+120, 30+240,
 ];
-const colors = Hs.map(H=> HSL2RGB(H, S, L));
+const colors = Hs.map(H => `hsl(${H}, ${S}%, ${L}%)`);
 console.log(`Colors: ${colors.length}`);
 
 // https://regex101.com/r/4ovR28/
-const epRegex = /((.+)((\s|\[|【|第|EP)(?:\d{1,4}[-|~])?(\d{1,4})(?:\.\d)?(?:v\d)?(?:TV)?(集|話|话|\s|\]|】))(.*))/;
-// TODO: named
-// ((?<prefix>.+)(?<epText>([\s|\[|【|第])(?:\d{1,3}[-|~])?(?<ep>\d{1,3})(?:\.\d)?(?:v\d)?([集|話|话|\s|\]|】]))(?<suffix>.*))
+const epRegex = /^(?<prefix>.+)(?<epText>(?:\s|\[|【|第|EP)(?:\d{1,4}[-~])?(?<ep>\d{1,4})(?:\.\d)?(?:v\d)?(?:TV)?(?:集|話|话|\s|\]|】|$))(?<suffix>.*)$/i;
 
-function highlightMe(){
-    let $element = $(this);
-    if($element.html().match(/<highlight/)){
+const sites = [
+    {
+        name: 'Bangumi',
+        hosts: ['bangumi.moe'],
+        selector: '[torrent-list] .md-item-raised-title span',
+    },
+    {
+        name: 'DMHY',
+        hosts: ['dmhy.org'],
+        selector: '.table table > tbody > tr > td.title > a',
+    },
+    {
+        name: 'XFSub',
+        hosts: ['share.xfsub.com', 'share.xfapi.top'],
+        selector: '#listTable > tbody > tr > td:nth-child(2) > a:last-child',
+    },
+    {
+        name: 'Mikan',
+        hosts: ['mikanani.me'],
+        // Only table rows: the mobile list duplicates these links with nested markup
+        selector: 'table a[href^="/Home/Episode/"]',
+    },
+];
+
+// Element -> textContent at the time it was last processed, so unchanged
+// elements (highlighted or not) are skipped on later scans.
+const processed = new WeakMap();
+
+function highlightMe(element) {
+    if (processed.get(element) === element.textContent) {
         return;
     }
-    var text = $element.text().trim();
-    var found = epRegex.exec(text);
-    if(found){
-        let prefix = found[2];
-        let epText = found[3];
-        let ep = Number(found[5]);
-        let suffix = found[7];
-
-        ep = Math.max(ep, 0);
-        let color = colors[ep % colors.length];
-        $element.empty().append([
-            document.createTextNode(prefix),
-            `<highlight style="background-color: ${color}">${epText}</highlight>`,
-            document.createTextNode(suffix)
-        ]);
-    }else{
-        console.log('NO-EP',text);
+    const text = element.textContent.trim();
+    const found = epRegex.exec(text);
+    if (found) {
+        const { prefix, epText, ep, suffix } = found.groups;
+        const highlight = document.createElement('highlight');
+        highlight.style.backgroundColor = colors[Number(ep) % colors.length];
+        highlight.textContent = epText;
+        element.replaceChildren(prefix, highlight, suffix);
+    } else {
+        console.log('NO-EP', text);
     }
-};
-if(/bangumi.moe/.test(document.location.host)){
-    console.log('Highlighting Bangumi');
-    $(document).on("mouseenter",'[torrent-list]',function(e){
-        let titleElements = $(this).find(".md-item-raised-title");
+    processed.set(element, element.textContent);
+}
 
-        titleElements.find("span").each(highlightMe);
-        titleElements.off("mouseenter");
-        titleElements.on("mouseenter",highlightMe);
-    });
-}else if(/dmhy.org/.test(document.location.host)){
-    console.log('Highlighting DMHY');
-    let table = $(".table  table > tbody");
-    let titles = table.find('tr > td.title > a');
-    titles.each(highlightMe);
-    titles.off("mouseenter");
-    titles.on("mouseenter",highlightMe);
-}else if(
-    /share.xfsub.com/.test(document.location.host) ||
-    /share.xfapi.top/.test(document.location.host)
-    ){
-    console.log('Highlighting XFSub');
-    $(document).ready(function(){
-        let table = $("#listTable > tbody");
-        let titles = table.find('tr > td:nth-child(2) > a:last-child');
-        titles.each(highlightMe);
-        titles.off("mouseenter");
-        titles.on("mouseenter",highlightMe);
-    });
-} else if(/mikanani.me/.test(document.location.host)){
-    console.log('Highlighting Mikan');
-    $(document).ready(function(){
-        // Only table rows: the mobile list duplicates these links with nested markup
-        let titles = $('table a[href^="/Home/Episode/"]');
-        titles.each(highlightMe);
-        titles.off("mouseenter");
-        titles.on("mouseenter",highlightMe);
-    });
-} else{
-    console.log('NO MATCH for Highlighting')
+const host = location.hostname;
+const site = sites.find(({ hosts }) =>
+    hosts.some(domain => host === domain || host.endsWith(`.${domain}`))
+);
+
+if (site) {
+    console.log(`Highlighting ${site.name}`);
+    const highlightAll = () => document.querySelectorAll(site.selector).forEach(highlightMe);
+
+    // Lists may be rendered late or re-rendered (e.g. Angular on bangumi.moe, pagination),
+    // so rescan on DOM changes, batched to once per frame.
+    let scheduled = false;
+    new MutationObserver(() => {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(() => {
+            scheduled = false;
+            highlightAll();
+        });
+    }).observe(document.body, { childList: true, subtree: true, characterData: true });
+
+    highlightAll();
+} else {
+    console.log('NO MATCH for Highlighting');
 }
