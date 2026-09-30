@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Highlight ep#
 // @namespace    com.willian-zhang.highlight-eps
-// @version      3.0
+// @version      3.1
 // @description  Highlight Episode Number
 // @author       Willian
 // @match        https://dmhy.org/
@@ -25,7 +25,8 @@ const colors = Hs.map(H => `hsl(${H}, ${S}%, ${L}%)`);
 console.log(`Colors: ${colors.length}`);
 
 // https://regex101.com/r/4ovR28/
-const epRegex = /^(?<prefix>.+)(?<epText>(?:\s|\[|【|第|EP)(?:\d{1,4}[-~])?(?<ep>\d{1,4})(?:\.\d)?(?:v\d)?(?:TV)?(?:集|話|话|\s|\]|】|$))(?<suffix>.*)$/i;
+// The lookbehind skips audio channel layouts like "OPUS 2.0" / "AAC 5.1".
+const epRegex = /^(?<prefix>.+)(?<!\b(?:AAC|OPUS|FLAC|E?-?AC-?3|DDP?|DTS(?:-HD)?|TrueHD|L?PCM|MP3))(?<epText>(?:\s|\[|【|第|EP)(?:\d{1,4}[-~])?(?<ep>\d{1,4})(?:\.\d)?(?:v\d)?(?:TV)?(?:集|話|话|\s|\]|】|$))(?<suffix>.*)$/i;
 
 const sites = [
     {
